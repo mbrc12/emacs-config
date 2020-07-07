@@ -6,6 +6,8 @@
 (menu-bar-mode -1)
 (show-paren-mode 1)
 
+(setq scroll-step 1)
+
 (setq-default tab-width 4)
 (setq indent-tabs-mode nil)
 
@@ -15,8 +17,7 @@
 (add-hook 'after-init-hook 'global-display-line-numbers-mode)
 (global-hl-line-mode 1)
 
-(setq speedbar-show-unknown-files t)
-
+;; Do not litter this init.el
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
 
@@ -36,11 +37,6 @@
      (line-end-position))
     (forward-line))
 
-;; Do not litter this init.el
-; (setq custom-file "~/.emacs.d/custom.el")
-; (load custom-file)
-
-; (load "~/.emacs.d/move-border.el")
 
 
 ;; For straight.el -- package management
@@ -117,7 +113,15 @@
 
   :config
   (evil-mode 1)
+  (define-key evil-normal-state-map (kbd "-ec") '(lambda ()
+                                                   (interactive)
+                                                   (find-file "~/.emacs.d/init.el")))
+  (define-key evil-normal-state-map (kbd "-rl") '(lambda ()
+                                                    (interactive)
+                                                    (load-file buffer-file-name)))
+  (define-key evil-normal-state-map (kbd "-pp") 'projectile-switch-project)
   (define-key evil-normal-state-map (kbd "-tt") 'treemacs)
+  (define-key evil-normal-state-map (kbd "-TT") 'treemacs-projectile)
   (define-key evil-normal-state-map (kbd "M-q") 'delete-other-windows)
   (define-key evil-normal-state-map (kbd "M-w") 'delete-window)
   (define-key evil-normal-state-map (kbd ";") 'commenter)
@@ -215,6 +219,13 @@
 
 (use-package treemacs-evil
   :straight t)
+
+;;;;;;
+
+(use-package projectile
+  :straight t
+  :config
+  (projectile-add-known-project "~/dev/jst"))
 
 ;;;;;;
 
